@@ -19,7 +19,7 @@ datasets:
       type: disk
       data_list_csv: ./Real_Denoising/Datasets/train/train.csv
 
-    # data loader
+    # data loaider
     use_shuffle: true
     num_worker_per_gpu: 8
     batch_size_per_gpu: 8
@@ -48,6 +48,7 @@ datasets:
     dataroot_lq: ./Real_Denoising/Datasets/val/input_crops
     io_backend:
       type: disk
+      data_list_csv: ./Real_Denoising/Datasets/val/val.csv
 
 # network structures
 network_g:

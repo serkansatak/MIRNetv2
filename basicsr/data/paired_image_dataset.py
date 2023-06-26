@@ -59,8 +59,8 @@ class Dataset_PairedImage(data.Dataset):
             self.filename_tmpl = '{}'
 
         # temporal augmentation
-        if (self.io_backend_opt['type'] == 'disk') and ('date_file_csv' in self.io_backend_opt.keys()):
-            self.paths = paired_paths_from_csv(self.io_backend_opt['data_list_file'], ['lq','gt'])
+        if (self.io_backend_opt['type'] == 'disk') and ('data_list_csv' in self.io_backend_opt.keys()):
+            self.paths = paired_paths_from_csv(self.io_backend_opt['data_list_csv'], ['lq','gt'])
         
         elif self.io_backend_opt['type'] == 'lmdb':
             self.io_backend_opt['db_paths'] = [self.lq_folder, self.gt_folder]
