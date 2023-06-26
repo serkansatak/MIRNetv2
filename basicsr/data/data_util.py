@@ -174,7 +174,7 @@ def paired_paths_from_csv(csv_file, keys):
     df = pd.read_csv(csv_file)
     paths = []
 
-    for row in df.iterrows():
+    for _, row in df.iterrows():
         paths.append(dict([(f'{key}_path', row[key]) for key in keys]))
     return paths
 
