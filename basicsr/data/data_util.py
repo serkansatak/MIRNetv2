@@ -153,6 +153,32 @@ def paired_paths_from_lmdb(folders, keys):
                 dict([(f'{input_key}_path', lmdb_key),
                       (f'{gt_key}_path', lmdb_key)]))
         return paths
+    
+def paired_paths_from_csv(csv_file, keys):
+    """Generate paired paths from an meta information file.
+
+    Each line in the meta information file contains the image paths for low quality and ground truth and
+    image shape (usually for gt), separated by a comma.
+
+    Args:
+        csv_file (str): Path to the meta information file. columns = ['lq', 'gt', 'shape']
+        keys (list[str]): A list of keys identifying folders. The order should
+            be in consistent with folders, e.g., ['lq', 'gt']. 
+
+    Returns:
+        list[str]: Returned path list.
+    """
+    
+    import pandas as pd
+
+    df = pd.read_csv(csv_file)
+    paths = []
+
+    for row in df.iterrows():
+        paths.append(dict([(f'{key}_path', row[key]) for key in keys]))
+    return paths
+
+
 
 
 def paired_paths_from_meta_info_file(folders, keys, meta_info_file,

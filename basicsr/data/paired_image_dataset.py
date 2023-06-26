@@ -4,7 +4,8 @@ from torchvision.transforms.functional import normalize
 from basicsr.data.data_util import (paired_paths_from_folder,
                                     paired_DP_paths_from_folder,
                                     paired_paths_from_lmdb,
-                                    paired_paths_from_meta_info_file)
+                                    paired_paths_from_meta_info_file,
+                                    paired_paths_from_csv)
 from basicsr.data.transforms import augment, paired_random_crop, paired_random_crop_DP, random_augmentation
 from basicsr.utils import FileClient, imfrombytes, img2tensor, padding, padding_DP, imfrombytesDP
 
@@ -57,16 +58,22 @@ class Dataset_PairedImage(data.Dataset):
         else:
             self.filename_tmpl = '{}'
 
-        if self.io_backend_opt['type'] == 'lmdb':
+        # temporal augmentation
+        if (self.io_backend_opt['type'] == 'disk') and ('date_file_csv' in self.io_backend_opt.keys()):
+            self.paths = paired_paths_from_csv(self.io_backend_opt['data_list_file'], ['lq','gt'])
+        
+        elif self.io_backend_opt['type'] == 'lmdb':
             self.io_backend_opt['db_paths'] = [self.lq_folder, self.gt_folder]
             self.io_backend_opt['client_keys'] = ['lq', 'gt']
             self.paths = paired_paths_from_lmdb(
                 [self.lq_folder, self.gt_folder], ['lq', 'gt'])
+            
         elif 'meta_info_file' in self.opt and self.opt[
                 'meta_info_file'] is not None:
             self.paths = paired_paths_from_meta_info_file(
                 [self.lq_folder, self.gt_folder], ['lq', 'gt'],
                 self.opt['meta_info_file'], self.filename_tmpl)
+            
         else:
             self.paths = paired_paths_from_folder(
                 [self.lq_folder, self.gt_folder], ['lq', 'gt'],
@@ -130,6 +137,8 @@ class Dataset_PairedImage(data.Dataset):
 
     def __len__(self):
         return len(self.paths)
+    
+
 
 class Dataset_GaussianDenoising(data.Dataset):
     """Paired image dataset for image restoration.

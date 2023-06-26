@@ -10,13 +10,14 @@ datasets:
   train:
     name: TrainSet
     type: Dataset_PairedImage
-    dataroot_gt: ./Real_Denoising/Datasets/train/SIDD/target_crops
-    dataroot_lq: ./Real_Denoising/Datasets/train/SIDD/input_crops
-    geometric_augs: true
+    dataroot_gt: ./Real_Denoising/Datasets/train/target_crops
+    dataroot_lq: ./Real_Denoising/Datasets/train/input_crops
+    geometric_augs: false
 
     filename_tmpl: '{}'
     io_backend:
       type: disk
+      data_list_csv: ./Real_Denoising/Datasets/train/train.csv
 
     # data loader
     use_shuffle: true
@@ -43,8 +44,8 @@ datasets:
   val:
     name: ValSet
     type: Dataset_PairedImage
-    dataroot_gt: ./Real_Denoising/Datasets/val/SIDD/target_crops
-    dataroot_lq: ./Real_Denoising/Datasets/val/SIDD/input_crops
+    dataroot_gt: ./Real_Denoising/Datasets/val/target_crops
+    dataroot_lq: ./Real_Denoising/Datasets/val/input_crops
     io_backend:
       type: disk
 
