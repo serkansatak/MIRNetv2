@@ -307,6 +307,8 @@ def main():
                 use_image = opt['val'].get('use_image', True)
                 model.validation(val_loader, current_iter, tb_logger,
                                  opt['val']['save_img'], rgb2bgr, use_image )
+                
+            logger.info('End of iter {}/{}.'.format(current_iter, total_iters))
 
             data_time = time.time()
             iter_time = time.time()
