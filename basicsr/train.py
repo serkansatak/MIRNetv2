@@ -128,6 +128,8 @@ def create_train_val_dataloader(opt, logger):
 
 
 def main():
+
+    print("\n Training Started... \n")
     # parse options, set distributed setting, set ramdom seed
     opt = parse_options(is_train=True)
 
@@ -171,6 +173,8 @@ def main():
     result = create_train_val_dataloader(opt, logger)
     train_loader, train_sampler, val_loader, total_epochs, total_iters = result
 
+    print("\n DataLoader successful, waiting for model... \n")
+
     # create model
     if resume_state:  # resume training
         check_resume(opt, resume_state['iter'])
@@ -185,8 +189,12 @@ def main():
         start_epoch = 0
         current_iter = 0
 
+    print("\n Model created, waiting for logger... \n")
+
     # create message logger (formatted outputs)
     msg_logger = MessageLogger(opt, current_iter, tb_logger)
+
+    print("\n Logger created, waiting for prefetcher... \n")
 
     # dataloader prefetcher
     prefetch_mode = opt['datasets']['train'].get('prefetch_mode')
@@ -200,6 +208,8 @@ def main():
     else:
         raise ValueError(f'Wrong prefetch_mode {prefetch_mode}.'
                          "Supported ones are: None, 'cuda', 'cpu'.")
+
+    print("\n Prefetcher created, waiting for training... \n")
 
     # training
     logger.info(
@@ -220,6 +230,8 @@ def main():
     logger_j = [True] * len(groups)
 
     scale = opt['scale']
+
+    print("\n Training started... \n")
 
     epoch = start_epoch
     while current_iter <= total_iters:
