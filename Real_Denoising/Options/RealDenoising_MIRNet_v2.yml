@@ -39,7 +39,7 @@ datasets:
     ### ------------------------------------------------------------
 
     dataset_enlarge_ratio: 1
-    prefetch_mode: ~
+    prefetch_mode: cuda
 
   val:
     name: ValSet
@@ -49,6 +49,8 @@ datasets:
     data_list_csv: ./Real_Denoising/Datasets/val/val.csv
     io_backend:
       type: disk
+
+    prefetch_mode: cuda
       
 
 # network structures
